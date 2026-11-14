@@ -59,18 +59,21 @@ def run(command):
     mon("sendkey ret")
 
 time.sleep(8 * slow)
-shot("boot-menu")
-mon("sendkey ret")
-time.sleep(10 * slow)
-mon("sendkey ret")
-time.sleep(80 * slow)
+shot("boot-8s")
+mon("sendkey ret")          # BIOS menu is up by now
+time.sleep(22 * slow)
+shot("boot-30s")
+time.sleep(15 * slow)
+shot("boot-45s")
+time.sleep(15 * slow)
+shot("boot-60s")
+mon("sendkey ret")          # UEFI menu, if it is still waiting
+time.sleep(100 * slow)
 shot("desktop")
-time.sleep(30 * slow)
-shot("desktop-later")
 run("chromium https://example.com")
 time.sleep(45 * slow)
 shot("chromium-https")
-if mode == "bios":
+if True:
     run("xfce4-terminal -H -x nmcli device")
     time.sleep(10 * slow)
     shot("network-status")

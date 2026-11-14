@@ -3,9 +3,6 @@
 name: Test MyOS ISO
 on:
   workflow_dispatch:
-  push:
-    branches: [main]
-    paths: ['.github/workflows/test-iso.yml', 'tools/ci-test.py']
   workflow_run:
     workflows: ["Build MyOS ISO"]
     types: [completed]
