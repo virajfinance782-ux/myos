@@ -1,0 +1,6 @@
+[Desktop Entry]
+Type=Application
+Name=MyOS wallpaper
+Exec=/usr/local/bin/myos-set-wallpaper
+OnlyShowIn=XFCE;
+NoDisplay=true

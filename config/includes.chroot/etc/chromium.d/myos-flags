@@ -1,0 +1,2 @@
+# Skip the first-run and default-browser prompts in the live session.
+export CHROMIUM_FLAGS="$CHROMIUM_FLAGS --no-first-run --no-default-browser-check"

@@ -1,0 +1,15 @@
+#!/bin/sh
+# Sets the MyOS wallpaper on every connected monitor, once per user.
+IMG=/usr/share/backgrounds/myos/wallpaper.png
+STAMP="${XDG_CONFIG_HOME:-$HOME/.config}/myos-wallpaper-set"
+[ -e "$STAMP" ] && exit 0
+command -v xfconf-query >/dev/null 2>&1 || exit 0
+sleep 3
+for mon in $(xrandr --query 2>/dev/null | awk '/ connected/{print $1}'); do
+	for ws in 0 1 2 3; do
+		base="/backdrop/screen0/monitor${mon}/workspace${ws}"
+		xfconf-query -c xfce4-desktop -p "${base}/last-image" -n -t string -s "$IMG"
+		xfconf-query -c xfce4-desktop -p "${base}/image-style" -n -t int -s 5
+	done
+done
+mkdir -p "$(dirname "$STAMP")" && : > "$STAMP"

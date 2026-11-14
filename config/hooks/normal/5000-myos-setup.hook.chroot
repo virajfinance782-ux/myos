@@ -1,0 +1,32 @@
+#!/bin/sh
+# Runs inside the image while it is being built.
+set -e
+
+# Locales: en_IN (default) and en_US as a fallback.
+cat > /etc/locale.gen <<LOCALES
+en_IN UTF-8
+en_IN.UTF-8 UTF-8
+en_US.UTF-8 UTF-8
+LOCALES
+locale-gen
+update-locale LANG=en_IN.UTF-8
+
+# Timezone baked in as well (live-config sets it again at boot).
+ln -sf /usr/share/zoneinfo/Asia/Kolkata /etc/localtime
+echo "Asia/Kolkata" > /etc/timezone
+
+# Branding. ID=debian is kept so tools that key on it keep working.
+sed -i 's/^PRETTY_NAME=.*/PRETTY_NAME="MyOS (based on Debian)"/' /usr/lib/os-release
+echo "MyOS \\n \\l" > /etc/issue
+echo "MyOS" > /etc/issue.net
+
+# Default wallpaper for anything that follows Debian's desktop-background alternative.
+update-alternatives --install /usr/share/images/desktop-base/desktop-background \
+	desktop-background /usr/share/backgrounds/myos/wallpaper.png 90 || true
+
+# App store: add Flathub so GNOME Software offers Flatpak apps.
+if flatpak remote-add --system --if-not-exists flathub https://dl.flathub.org/repo/flathub.flatpakrepo; then
+	echo "MyOS: Flathub remote added"
+else
+	echo "MyOS: WARNING: could not add Flathub (network?). Debian packages still work in the app store."
+fi

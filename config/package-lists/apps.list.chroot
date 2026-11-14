@@ -1,0 +1,42 @@
+# Browser (the real Debian package)
+chromium
+chromium-sandbox
+# App store: GNOME Software (Debian packages via PackageKit + Flatpak/Flathub)
+gnome-software
+gnome-software-plugin-flatpak
+flatpak
+xdg-desktop-portal-gtk
+# Everyday applications
+mousepad
+atril
+ristretto
+vlc
+libreoffice
+libreoffice-gtk3
+xarchiver
+7zip
+zip
+unzip
+gparted
+# Audio (PipeWire)
+pipewire-audio
+pavucontrol
+# Bluetooth
+bluez
+blueman
+# Printing
+cups
+system-config-printer
+ipp-usb
+avahi-daemon
+# Command line tools
+curl
+wget
+git
+htop
+nano
+less
+bash-completion
+pciutils
+usbutils
+ca-certificates

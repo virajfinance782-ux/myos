@@ -1,0 +1,15 @@
+#!/bin/sh
+# Runs in the ISO staging directory after the boot loaders are installed.
+# Renames the stock menu texts; harmless if a pattern does not match.
+set -e
+for f in isolinux/*.cfg boot/grub/*.cfg; do
+	[ -f "$f" ] || continue
+	sed -i \
+		-e 's/^menu title .*/menu title MyOS boot menu/' \
+		-e 's/Debian GNU\/Linux Live/MyOS Live/g' \
+		-e 's/Live system/MyOS Live/g' "$f"
+done
+for t in boot/grub/live-theme/theme.txt boot/grub/theme.txt; do
+	[ -f "$t" ] || continue
+	sed -i 's/^title-text:.*/title-text: "MyOS"/' "$t"
+done

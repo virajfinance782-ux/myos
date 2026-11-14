@@ -1,0 +1,25 @@
+#!/bin/sh
+# Run by "lb config". All image-wide options live here.
+set -e
+. ./myos.conf
+
+lb config noauto \
+	-d "${MYOS_SUITE}" \
+	-a amd64 \
+	-b iso-hybrid \
+	--archive-areas "main non-free-firmware" \
+	--apt-recommends true \
+	--security true \
+	--updates true \
+	--debian-installer none \
+	--memtest none \
+	--firmware-chroot false \
+	--firmware-binary false \
+	--uefi-secure-boot enable \
+	--checksums sha256 \
+	--image-name myos \
+	--iso-application "${MYOS_NAME}" \
+	--iso-publisher "${MYOS_NAME}" \
+	--iso-volume "${MYOS_NAME}" \
+	--bootappend-live "boot=live components quiet splash hostname=${MYOS_HOSTNAME} username=${MYOS_USER} locales=${MYOS_LOCALE} keyboard-layouts=${MYOS_KEYBOARD} timezone=${MYOS_TIMEZONE} persistence" \
+	"${@}"

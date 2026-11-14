@@ -1,0 +1,30 @@
+# Live system plumbing (live-boot/live-config are added by live-build itself)
+sudo
+user-setup
+locales
+console-setup
+keyboard-configuration
+# Networking
+network-manager
+network-manager-applet
+nm-connection-editor
+wpasupplicant
+wireless-regdb
+iw
+mobile-broadband-provider-info
+# Filesystems: exFAT, NTFS, FAT
+exfatprogs
+ntfs-3g
+dosfstools
+mtools
+# Firmware (non-free-firmware component)
+firmware-linux
+firmware-iwlwifi
+firmware-realtek
+firmware-atheros
+firmware-misc-nonfree
+firmware-brcm80211
+firmware-mediatek
+firmware-sof-signed
+intel-microcode
+amd64-microcode
