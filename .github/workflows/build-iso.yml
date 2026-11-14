@@ -6,7 +6,7 @@ on:
   workflow_dispatch:
   push:
     branches: [main]
-    paths-ignore: ['README.md']
+    paths-ignore: ['README.md', '.github/workflows/test-iso.yml', 'tools/ci-test.py']
 
 jobs:
   build:

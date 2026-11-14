@@ -1,0 +1,53 @@
+# Boots the most recently built ISO in QEMU (BIOS and UEFI) and publishes
+# screenshots to the "test-results" branch.
+name: Test MyOS ISO
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths: ['.github/workflows/test-iso.yml', 'tools/ci-test.py']
+  workflow_run:
+    workflows: ["Build MyOS ISO"]
+    types: [completed]
+
+permissions:
+  contents: write
+  actions: read
+
+jobs:
+  test:
+    if: github.event_name != 'workflow_run' || github.event.workflow_run.conclusion == 'success'
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install QEMU
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y --no-install-recommends qemu-system-x86 ovmf netpbm
+      - name: Download the latest built ISO
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          id=$(gh run list --workflow build-iso.yml --status success --limit 1 --json databaseId --jq '.[0].databaseId')
+          echo "Using build run $id"
+          gh run download "$id" -n MyOS-iso -D iso
+          ls -la iso
+          mkdir -p shots
+          { echo "build run: $id"; ls -la iso; cat iso/*.sha256; qemu-system-x86_64 --version | head -1; ls -la /dev/kvm || echo "no kvm"; } > shots/info.txt
+      - name: Boot test (BIOS)
+        run: sudo python3 tools/ci-test.py iso/MyOS-*-amd64.iso bios shots
+      - name: Boot test (UEFI)
+        run: sudo python3 tools/ci-test.py iso/MyOS-*-amd64.iso uefi shots
+      - name: Publish screenshots to the test-results branch
+        if: always()
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          sudo chown -R "$(id -u)" shots
+          cd shots
+          for f in *.ppm; do [ -f "$f" ] && pnmtopng "$f" > "${f%.ppm}.png" && rm "$f"; done
+          git init -q -b test-results
+          git add .
+          git -c user.name="myos-ci" -c user.email="ci@users.noreply.github.com" commit -q -m "Test screenshots"
+          git push -f "https://x-access-token:${GH_TOKEN}@github.com/${GITHUB_REPOSITORY}" test-results
