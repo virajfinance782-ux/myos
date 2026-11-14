@@ -1,0 +1,9 @@
+build run: 43613606994
+total 1972796
+drwxr-xr-x 2 runner runner       4096 Nov 14 16:19 .
+drwxr-xr-x 9 runner runner       4096 Nov 14 16:19 ..
+-rw-r--r-- 1 runner runner 2020130816 Nov 14 16:19 MyOS-20261114-amd64.iso
+-rw-r--r-- 1 runner runner         90 Nov 14 16:19 MyOS-20261114-amd64.iso.sha256
+d6ce50b22e6b334e5ffd0f7326597eda30793b02c9cd44a8c8e9af0abc85e6d9  MyOS-20261114-amd64.iso
+QEMU emulator version 10.2.1 (Debian 1:10.2.1+ds-1ubuntu3.3)
+crw-rw---- 1 root kvm 10, 232 Nov 14 16:14 /dev/kvm
